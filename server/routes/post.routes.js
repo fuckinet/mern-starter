@@ -14,6 +14,9 @@ router.route('/posts/:cuid/comments').get(PostController.getPostComments);
 // Add a new Comment
 router.route('/posts/:cuid/comments').post(PostController.addComment);
 
+// Add a new Comment
+router.route('/posts/:cuid/comment/:commentCuid').delete(PostController.deleteComment);
+
 // Add a new Post
 router.route('/posts').post(PostController.addPost);
 

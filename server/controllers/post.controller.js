@@ -75,6 +75,24 @@ export function addComment(req, res) {
 }
 
 /**
+ * Delete a comment
+ * @param req
+ * @param res
+ * @returns void
+ */
+export function deleteComment(req, res) {
+  Comment.findOne({ cuid: req.params.commentCuid }).exec((err, post) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+
+    post.remove(() => {
+      res.status(200).end();
+    });
+  });
+}
+
+/**
  * Get a single post
  * @param req
  * @param res
