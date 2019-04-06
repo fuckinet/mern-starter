@@ -69,7 +69,7 @@ export function getPost(req, res) {
  * @returns void
  */
 export function getPostComments(req, res) {
-  Comment.find({ postCuid: req.params.cuid }).exec((err, comments) => {
+  Comment.find({ postCuid: req.params.cuid }).sort('-dateAdded').exec((err, comments) => {
     if (err) {
       res.status(500).send(err);
     }
