@@ -10,6 +10,7 @@ export default {
     by: 'Par',
     says: 'dit:',
     deletePost: 'Supprimer le message',
+    deleteComment: 'Supprimer le commentaire',
     createNewPost: 'Créer un nouveau message',
     authorName: 'Nom de l\'auteur',
     postTitle: 'Titre de l\'article',

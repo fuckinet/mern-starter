@@ -10,6 +10,7 @@ export default {
     by: 'By',
     says: 'says:',
     deletePost: 'Delete Post',
+    deleteComment: 'Delete Comment',
     createNewPost: 'Create new post',
     authorName: 'Author\'s Name',
     postTitle: 'Post Title',

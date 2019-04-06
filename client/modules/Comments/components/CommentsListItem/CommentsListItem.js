@@ -9,6 +9,7 @@ function CommentsListItem(props) {
   return (
     <div className={styles['single-post-comment']}>
       <h3 className={styles['author-name']}>{props.comment.name} <FormattedMessage id="says" /></h3>
+      <p className={styles['comment-action']}><a href="#" onClick={props.onDelete}><FormattedMessage id="deleteComment" /></a></p>
       <p className={styles['comment-text']}>{props.comment.text}</p>
     </div>
   );
@@ -20,6 +21,7 @@ CommentsListItem.propTypes = {
     text: PropTypes.string.isRequired,
     postCuid: PropTypes.string.isRequired,
   }).isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default CommentsListItem;

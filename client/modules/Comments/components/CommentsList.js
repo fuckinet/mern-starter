@@ -19,6 +19,7 @@ function CommentsList(props) {
           <CommentsListItem
             comment={comment}
             key={comment.cuid}
+            onDelete={() => props.handleDeleteComment(comment.cuid)}
           />
         ))
       }
@@ -27,6 +28,7 @@ function CommentsList(props) {
 }
 
 CommentsList.propTypes = {
+  handleDeleteComment: PropTypes.func.isRequired,
   toggleAddComment: PropTypes.func.isRequired,
   comments: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,

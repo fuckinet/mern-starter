@@ -12,7 +12,7 @@ import styles from '../../components/PostListItem/PostListItem.css';
 
 // Import Actions
 import { fetchPost } from '../../PostActions';
-import { addCommentRequest, fetchComments } from '../../../Comments/CommentActions';
+import { addCommentRequest, deleteCommentRequest, fetchComments } from '../../../Comments/CommentActions';
 
 // Import Selectors
 import { getPost } from '../../PostReducer';
@@ -25,6 +25,12 @@ class PostDetailPage extends Component {
   componentDidMount() {
     this.props.dispatch(fetchComments(this.props.params.cuid));
   }
+
+  handleDeleteComment = comment => {
+    if (confirm('Do you want to delete this comment')) { // eslint-disable-line
+      this.props.dispatch(deleteCommentRequest(this.props.params.cuid, comment));
+    }
+  };
 
   toggleAddCommentSection = () => {
     this.props.dispatch(toggleAddComment());
@@ -47,6 +53,7 @@ class PostDetailPage extends Component {
         <hr className={styles.divider} />
         <CommentAddWidget addComment={this.handleAddComment} showAddComment={this.props.showAddComment} />
         <CommentsList
+          handleDeleteComment={this.handleDeleteComment}
           toggleAddComment={this.toggleAddCommentSection}
           comments={this.props.comments}
         />
