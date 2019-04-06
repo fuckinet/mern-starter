@@ -1,4 +1,4 @@
-import { ADD_COMMENT, ADD_COMMENTS, DELETE_COMMENT } from './CommentActions';
+import { ADD_COMMENT, ADD_COMMENTS, DELETE_COMMENT, EDIT_COMMENT } from './CommentActions';
 
 // Initial State
 const initialState = { data: [] };
@@ -19,6 +19,17 @@ const CommentsReducer = (state = initialState, action) => {
       return {
         data: state.data.filter(comment => comment.cuid !== action.cuid),
       };
+
+    case EDIT_COMMENT : {
+      return {
+        data: state.data.map(comment => {
+          if (comment.cuid === action.comment.cuid) {
+            return { ...action.comment };
+          }
+          return comment;
+        }),
+      };
+    }
 
     default:
       return state;

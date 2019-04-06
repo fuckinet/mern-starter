@@ -11,6 +11,8 @@ export default {
     says: 'dit:',
     deletePost: 'Supprimer le message',
     deleteComment: 'Supprimer le commentaire',
+    editComment: 'Modifier le commentaire',
+    cancelEditComment: 'Annuler',
     createNewPost: 'Créer un nouveau message',
     authorName: 'Nom de l\'auteur',
     postTitle: 'Titre de l\'article',

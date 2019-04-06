@@ -12,13 +12,13 @@ import styles from '../../components/PostListItem/PostListItem.css';
 
 // Import Actions
 import { fetchPost } from '../../PostActions';
-import { addCommentRequest, deleteCommentRequest, fetchComments } from '../../../Comments/CommentActions';
+import { addCommentRequest, deleteCommentRequest, editCommentRequest, fetchComments } from '../../../Comments/CommentActions';
 
 // Import Selectors
 import { getPost } from '../../PostReducer';
 import { getComments } from '../../../Comments/CommentReducer';
-import { toggleAddComment } from '../../../App/AppActions';
-import { getShowAddComment } from '../../../App/AppReducer';
+import { toggleAddComment, toggleEditComment } from '../../../App/AppActions';
+import { getShowAddComment, getShowEditComment } from '../../../App/AppReducer';
 import CommentAddWidget from '../../../Comments/components/CommentAddWidget/CommentAddWidget';
 
 class PostDetailPage extends Component {
@@ -30,6 +30,15 @@ class PostDetailPage extends Component {
     if (confirm('Do you want to delete this comment')) { // eslint-disable-line
       this.props.dispatch(deleteCommentRequest(this.props.params.cuid, comment));
     }
+  };
+
+  handleEditComment = (comment, name, text) => {
+    this.props.dispatch(toggleAddComment());
+    this.props.dispatch(editCommentRequest(this.props.params.cuid, comment, { name, text }));
+  };
+
+  toggleEditCommentSection = comment => {
+    this.props.dispatch(toggleEditComment(comment));
   };
 
   toggleAddCommentSection = () => {
@@ -53,8 +62,11 @@ class PostDetailPage extends Component {
         <hr className={styles.divider} />
         <CommentAddWidget addComment={this.handleAddComment} showAddComment={this.props.showAddComment} />
         <CommentsList
+          handleEditComment={this.handleEditComment}
           handleDeleteComment={this.handleDeleteComment}
+          toggleEditComment={this.toggleEditCommentSection}
           toggleAddComment={this.toggleAddCommentSection}
+          showEditComment={this.props.showEditComment}
           comments={this.props.comments}
         />
       </div>
@@ -74,6 +86,7 @@ params => {
 function mapStateToProps(state, props) {
   return {
     showAddComment: getShowAddComment(state),
+    showEditComment: getShowEditComment(state),
     post: getPost(state, props.params.cuid),
     comments: getComments(state, props.params.cuid),
   };
@@ -81,6 +94,7 @@ function mapStateToProps(state, props) {
 
 PostDetailPage.propTypes = {
   showAddComment: PropTypes.bool.isRequired,
+  showEditComment: PropTypes.string.isRequired,
   post: PropTypes.shape({
     name: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
