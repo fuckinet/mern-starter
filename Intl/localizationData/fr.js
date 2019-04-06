@@ -3,6 +3,8 @@ export default {
   messages: {
     siteTitle: 'MERN blog de démarrage',
     addPost: 'Ajouter Poster',
+    addComment: 'Ajouter un commentaire',
+    addNewComment: 'Laissez un commentaire',
     switchLanguage: 'Changer de langue',
     twitterMessage: 'Nous sommes sur Twitter',
     by: 'Par',
@@ -12,6 +14,7 @@ export default {
     authorName: 'Nom de l\'auteur',
     postTitle: 'Titre de l\'article',
     postContent: 'Contenu après',
+    commentText: 'Qu\'est-ce que tu penses?',
     submit: 'Soumettre',
     comment: `user {name} {value, plural,
     	  =0 {does not have any comments}

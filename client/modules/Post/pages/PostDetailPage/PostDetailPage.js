@@ -12,16 +12,28 @@ import styles from '../../components/PostListItem/PostListItem.css';
 
 // Import Actions
 import { fetchPost } from '../../PostActions';
-import { fetchComments } from '../../../Comments/CommentActions';
+import { addCommentRequest, fetchComments } from '../../../Comments/CommentActions';
 
 // Import Selectors
 import { getPost } from '../../PostReducer';
 import { getComments } from '../../../Comments/CommentReducer';
+import { toggleAddComment } from '../../../App/AppActions';
+import { getShowAddComment } from '../../../App/AppReducer';
+import CommentAddWidget from '../../../Comments/components/CommentAddWidget/CommentAddWidget';
 
 class PostDetailPage extends Component {
   componentDidMount() {
     this.props.dispatch(fetchComments(this.props.params.cuid));
   }
+
+  toggleAddCommentSection = () => {
+    this.props.dispatch(toggleAddComment());
+  };
+
+  handleAddComment = (name, text) => {
+    this.props.dispatch(toggleAddComment());
+    this.props.dispatch(addCommentRequest(this.props.params.cuid, { name, text }));
+  };
 
   render() {
     return (
@@ -33,7 +45,9 @@ class PostDetailPage extends Component {
           <p className={styles['post-desc']}>{this.props.post.content}</p>
         </div>
         <hr className={styles.divider} />
+        <CommentAddWidget addComment={this.handleAddComment} showAddComment={this.props.showAddComment} />
         <CommentsList
+          toggleAddComment={this.toggleAddCommentSection}
           comments={this.props.comments}
         />
       </div>
@@ -52,12 +66,14 @@ params => {
 // Retrieve data from store as props
 function mapStateToProps(state, props) {
   return {
+    showAddComment: getShowAddComment(state),
     post: getPost(state, props.params.cuid),
     comments: getComments(state, props.params.cuid),
   };
 }
 
 PostDetailPage.propTypes = {
+  showAddComment: PropTypes.bool.isRequired,
   post: PropTypes.shape({
     name: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,

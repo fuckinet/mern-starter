@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FormattedMessage } from 'react-intl';
 
 // Import Style
 import styles from './CommentsListItem/CommentsListItem.css';
@@ -10,6 +11,9 @@ import CommentsListItem from './CommentsListItem/CommentsListItem';
 function CommentsList(props) {
   return (
     <div className={styles['post-comment-list']}>
+      <a className={styles['add-comment-button']} href="#" onClick={props.toggleAddComment}>
+        <FormattedMessage id="addComment" />
+      </a>
       {
         props.comments.map(comment => (
           <CommentsListItem
@@ -23,6 +27,7 @@ function CommentsList(props) {
 }
 
 CommentsList.propTypes = {
+  toggleAddComment: PropTypes.func.isRequired,
   comments: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,

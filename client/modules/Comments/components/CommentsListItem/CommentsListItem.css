@@ -11,3 +11,15 @@
 .post-comment-list .single-post-comment .comment-text {
   margin: 0 5px;
 }
+
+.add-comment-button {
+  color: #FFF;
+  background: #03A9F4;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 1000px;
+  text-align: center;
+  align-self: center;
+  margin: 20px auto;
+  display: table;
+}

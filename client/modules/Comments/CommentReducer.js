@@ -7,7 +7,7 @@ const CommentsReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_COMMENT :
       return {
-        data: [action.comments, ...state.data],
+        data: [action.comment, ...state.data],
       };
 
     case ADD_COMMENTS :
