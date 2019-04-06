@@ -1,0 +1,13 @@
+.post-comment-list .single-post-comment {
+  margin: 25px 50px;
+}
+
+.post-comment-list .author-name{
+  font-size: 16px;
+  margin-bottom: 6px;
+  color: #757575;
+}
+
+.post-comment-list .single-post-comment .comment-text {
+  margin: 0 5px;
+}
