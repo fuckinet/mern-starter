@@ -8,6 +8,18 @@ router.route('/posts').get(PostController.getPosts);
 // Get one post by cuid
 router.route('/posts/:cuid').get(PostController.getPost);
 
+// Get post all comments by cuid
+router.route('/posts/:cuid/comments').get(PostController.getPostComments);
+
+// Add a new Comment
+router.route('/posts/:cuid/comments').post(PostController.addComment);
+
+// Delete a Comment by cuid
+router.route('/posts/:cuid/comment/:commentCuid').delete(PostController.deleteComment);
+
+// Edit a Comment by cuid
+router.route('/posts/:cuid/comment/:commentCuid').post(PostController.editComment);
+
 // Add a new Post
 router.route('/posts').post(PostController.addPost);
 

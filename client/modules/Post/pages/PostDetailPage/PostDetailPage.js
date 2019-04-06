@@ -1,44 +1,100 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
+
+// Import Components
+import CommentsList from '../../../Comments/components/CommentsList';
 
 // Import Style
 import styles from '../../components/PostListItem/PostListItem.css';
 
 // Import Actions
 import { fetchPost } from '../../PostActions';
+import { addCommentRequest, deleteCommentRequest, editCommentRequest, fetchComments } from '../../../Comments/CommentActions';
 
 // Import Selectors
 import { getPost } from '../../PostReducer';
+import { getComments } from '../../../Comments/CommentReducer';
+import { toggleAddComment, toggleEditComment } from '../../../App/AppActions';
+import { getShowAddComment, getShowEditComment } from '../../../App/AppReducer';
+import CommentAddWidget from '../../../Comments/components/CommentAddWidget/CommentAddWidget';
 
-export function PostDetailPage(props) {
-  return (
-    <div>
-      <Helmet title={props.post.title} />
-      <div className={`${styles['single-post']} ${styles['post-detail']}`}>
-        <h3 className={styles['post-title']}>{props.post.title}</h3>
-        <p className={styles['author-name']}><FormattedMessage id="by" /> {props.post.name}</p>
-        <p className={styles['post-desc']}>{props.post.content}</p>
+class PostDetailPage extends Component {
+  componentDidMount() {
+    this.props.dispatch(fetchComments(this.props.params.cuid));
+  }
+
+  handleDeleteComment = comment => {
+    if (confirm('Do you want to delete this comment')) { // eslint-disable-line
+      this.props.dispatch(deleteCommentRequest(this.props.params.cuid, comment));
+    }
+  };
+
+  handleEditComment = (comment, name, text) => {
+    this.props.dispatch(toggleAddComment());
+    this.props.dispatch(editCommentRequest(this.props.params.cuid, comment, { name, text }));
+  };
+
+  toggleEditCommentSection = comment => {
+    this.props.dispatch(toggleEditComment(comment));
+  };
+
+  toggleAddCommentSection = () => {
+    this.props.dispatch(toggleAddComment());
+  };
+
+  handleAddComment = (name, text) => {
+    this.props.dispatch(toggleAddComment());
+    this.props.dispatch(addCommentRequest(this.props.params.cuid, { name, text }));
+  };
+
+  render() {
+    return (
+      <div>
+        <Helmet title={this.props.post.title} />
+        <div className={`${styles['single-post']} ${styles['post-detail']}`}>
+          <h3 className={styles['post-title']}>{this.props.post.title}</h3>
+          <p className={styles['author-name']}><FormattedMessage id="by" /> {this.props.post.name}</p>
+          <p className={styles['post-desc']}>{this.props.post.content}</p>
+        </div>
+        <hr className={styles.divider} />
+        <CommentAddWidget addComment={this.handleAddComment} showAddComment={this.props.showAddComment} />
+        <CommentsList
+          handleEditComment={this.handleEditComment}
+          handleDeleteComment={this.handleDeleteComment}
+          toggleEditComment={this.toggleEditCommentSection}
+          toggleAddComment={this.toggleAddCommentSection}
+          showEditComment={this.props.showEditComment}
+          comments={this.props.comments}
+        />
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 // Actions required to provide data for this component to render in server side.
 PostDetailPage.need = [params => {
   return fetchPost(params.cuid);
+},
+params => {
+  return fetchComments(params.cuid);
 }];
 
 // Retrieve data from store as props
 function mapStateToProps(state, props) {
   return {
+    showAddComment: getShowAddComment(state),
+    showEditComment: getShowEditComment(state),
     post: getPost(state, props.params.cuid),
+    comments: getComments(state, props.params.cuid),
   };
 }
 
 PostDetailPage.propTypes = {
+  showAddComment: PropTypes.bool.isRequired,
+  showEditComment: PropTypes.string.isRequired,
   post: PropTypes.shape({
     name: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
@@ -46,6 +102,17 @@ PostDetailPage.propTypes = {
     slug: PropTypes.string.isRequired,
     cuid: PropTypes.string.isRequired,
   }).isRequired,
+  comments: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    cuid: PropTypes.string.isRequired,
+    postCuid: PropTypes.string.isRequired,
+  })).isRequired,
+  params: PropTypes.shape({
+    cuid: PropTypes.string.isRequired,
+    slug: PropTypes.string.isRequired,
+  }).isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps)(PostDetailPage);
