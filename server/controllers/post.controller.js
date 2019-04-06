@@ -48,6 +48,33 @@ export function addPost(req, res) {
 }
 
 /**
+ * Save a comment
+ * @param req
+ * @param res
+ * @returns void
+ */
+export function addComment(req, res) {
+  if (!req.body.comment.name || !req.body.comment.text) {
+    res.status(403).end();
+  }
+
+  const newPost = new Comment(req.body.comment);
+
+  // Let's sanitize inputs
+  newPost.name = sanitizeHtml(newPost.name);
+  newPost.text = sanitizeHtml(newPost.text);
+
+  newPost.postCuid = req.params.cuid;
+  newPost.cuid = cuid();
+  newPost.save((err, saved) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    res.json({ comment: saved });
+  });
+}
+
+/**
  * Get a single post
  * @param req
  * @param res

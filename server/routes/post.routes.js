@@ -11,6 +11,9 @@ router.route('/posts/:cuid').get(PostController.getPost);
 // Get post all comments by cuid
 router.route('/posts/:cuid/comments').get(PostController.getPostComments);
 
+// Add a new Comment
+router.route('/posts/:cuid/comments').post(PostController.addComment);
+
 // Add a new Post
 router.route('/posts').post(PostController.addPost);
 
