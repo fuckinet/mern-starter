@@ -1,4 +1,5 @@
 import Post from '../models/post';
+import Comment from '../models/comment';
 import cuid from 'cuid';
 import slug from 'limax';
 import sanitizeHtml from 'sanitize-html';
@@ -58,6 +59,21 @@ export function getPost(req, res) {
       res.status(500).send(err);
     }
     res.json({ post });
+  });
+}
+
+/**
+ * Get all comments a single post
+ * @param req
+ * @param res
+ * @returns void
+ */
+export function getPostComments(req, res) {
+  Comment.find({ postCuid: req.params.cuid }).exec((err, comments) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    res.json({ comments });
   });
 }
 

@@ -8,6 +8,9 @@ router.route('/posts').get(PostController.getPosts);
 // Get one post by cuid
 router.route('/posts/:cuid').get(PostController.getPost);
 
+// Get post all comments by cuid
+router.route('/posts/:cuid/comments').get(PostController.getPostComments);
+
 // Add a new Post
 router.route('/posts').post(PostController.addPost);
 
