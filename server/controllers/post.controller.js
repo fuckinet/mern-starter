@@ -81,14 +81,39 @@ export function addComment(req, res) {
  * @returns void
  */
 export function deleteComment(req, res) {
-  Comment.findOne({ cuid: req.params.commentCuid }).exec((err, post) => {
+  Comment.findOne({ cuid: req.params.commentCuid }).exec((err, comment) => {
     if (err) {
       res.status(500).send(err);
     }
 
-    post.remove(() => {
+    comment.remove(() => {
       res.status(200).end();
     });
+  });
+}
+
+/**
+ * Edit a comment
+ * @param req
+ * @param res
+ * @returns void
+ */
+export function editComment(req, res) {
+  if (!req.body.comment.name || !req.body.comment.text) {
+    res.status(403).end();
+  }
+
+  Comment.findOneAndUpdate({ cuid: req.params.commentCuid },
+    {
+      name: req.body.comment.name,
+      text: req.body.comment.text,
+    },
+    { new: true }
+  ).exec((err, saved) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    res.json({ comment: saved });
   });
 }
 
